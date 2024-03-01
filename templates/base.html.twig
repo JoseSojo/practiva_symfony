@@ -13,7 +13,60 @@
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
-    <body>
-        {% block body %}{% endblock %}
+    <body className=''>
+
+        <div class='min-h-screen grid grid-cols-1 grid-rows-[auto_1fr_auto]'>
+
+            <header class='py-4 shadow-md bg-white w-full grid'>
+                <h1 class='font-extrabold text-lg font-mono text-center'>BLOGGER</h1>
+                <nav class=''>
+                    <ul class='flex justify-center items-center gap-5 lg:gap-10'>
+                        {% if app.user %}
+                            <li>
+                                <a href="{{ path('app_blog') }}" className='px-4 py-2 font-bold text-black hover:bg-gray-300'>
+                                    inicio
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('app_blog_create') }}" className='px-4 py-2 font-bold text-black hover:bg-gray-300'>
+                                    crear
+                                </a>
+                            </li>
+                            <li>
+                                <a href="" className='px-4 py-2 font-bold text-black hover:bg-gray-300'>
+                                    perfil
+                                </a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href=" {{ path('app_login') }} " className='px-4 py-2 font-bold text-black hover:bg-gray-300'>
+                                    entrar
+                                </a>
+                            </li>
+                            <li>
+                                <a href=" {{ path('app_register') }} " className='px-4 py-2 font-bold text-black hover:bg-gray-300'>
+                                    registro
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </header>
+
+            <div class="bg-gray-200 py-10">
+                {% block body %}{% endblock %}
+            </div>
+
+            {% block footer %}
+                <footer class='text-center bg-white border-t py-4 bottom-0'>
+                    <ul className='md:flex justify-center'>
+                        <li class='text-black font-light text-lg'>Mi blog Symfony 6 con tailwind css</li>
+                        <li class='text-gray-800 font-light text-sm'>Jose Sojo - josesojo2828@gmail.com</li>
+                    </ul>
+                </footer>
+            {% endblock %}
+
+        </div>
+        
     </body>
 </html>

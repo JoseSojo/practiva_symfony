@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn-one {
+    width: auto;
+    padding: 9px 20px;
+    border-radius: 5px;
+    background: #2e86ebe7;
+    color: #dedede;
+    font-weight: bold;
+}
+
+.btn-one:hover {
+    background: #2774ccfb;
+    color: #fff;
+}

@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BlogCreateController!{% endblock %}
+
+{% block body %}
+
+<div style='padding:0 1.2em;' class="h-full w-[90%] lg:w-[40%] flex flex-col justify-center gap-5 items-center mx-auto bg-white shadow rounded-xl p-5 px-0 lg:px-10">
+    <h2 class="text-2xl font-light text-center">
+        Crear Post
+    </h2>
+    <form method="POST" class="w-full grid gap-5">
+        {{ form_errors(postForm) }}
+        
+        {{ form_start(postForm) }}
+            <div>
+                <label class="text-xl font-light text-gray-800">Titulo</label>
+                {{ form_row(postForm.title) }}
+            </div>
+
+            <div>
+                <label class="text-xl font-light text-gray-800">Contenido</label>
+                {{ form_row(postForm.content) }}
+            </div>
+
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
+            <input type="hidden" name="" value="{{ app.user.getId() }}" />
+            {{ form_row(postForm.slug, {
+                value: app.user.getId(),
+            }) }}
+
+
+            <button type="submit" class='px-9 py-2 rounded-md font-bold text-white bg-sky-600 hover:bg-sky-500'>
+                enviar
+            </button>
+
+            {{ form_end(postForm) }}
+
+    </form>
+</div>
+
+{% endblock %}

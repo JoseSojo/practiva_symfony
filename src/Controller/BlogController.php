@@ -13,19 +13,30 @@ class BlogController extends AbstractController
     public function index(PostRepository $postRepository): Response
     {
 
-        # $posts = $postRepository->findAll();
+        $posts = [];
+
+        echo('<pre><code>');
+        print_r($postRepository);
+        echo('</pre></code>');
 
         return $this->render('blog/index.html.twig', [
             'controller_name' => 'BlogController'
         ]);
     }
 
-    #[Route('/blog/create', name: 'app_create_blog')]
-    public function create(): Response
+    /*
+    #[Route('/blog/{id}', name: 'app_blog_one')]
+    public function show(PostRepository $postRepository, int $id): Response
     {
 
-        return $this->render('blog/create.html.twig', [
-            'controller_name' => 'BlogCreateController'
+        $post = $postRepository
+            -> find($id);
+
+        echo('<pre><code>');
+        print_r($post);
+        echo('</pre></code>');
+
+        return $this->render('blog/index.html.twig', [
         ]);
-    }
+    }*/
 }

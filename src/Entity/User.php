@@ -6,10 +6,12 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -41,9 +43,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 200)]
     private ?string $photo = null;
 
+    #[ORM\OneToMany(targetEntity: Posts::class, mappedBy: 'user_id')]
+    private Collection $postss;
+
+    #[ORM\OneToMany(targetEntity: Published::class, mappedBy: 'user_id')]
+    private Collection $publisheds;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+        $this->postss = new ArrayCollection();
+        $this->publisheds = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -178,6 +188,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhoto(string $photo): static
     {
         $this->photo = $photo;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Posts>
+     */
+    public function getPostss(): Collection
+    {
+        return $this->postss;
+    }
+
+    public function addPostss(Posts $postss): static
+    {
+        if (!$this->postss->contains($postss)) {
+            $this->postss->add($postss);
+            $postss->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removePostss(Posts $postss): static
+    {
+        if ($this->postss->removeElement($postss)) {
+            // set the owning side to null (unless already changed)
+            if ($postss->getUserId() === $this) {
+                $postss->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Published>
+     */
+    public function getPublisheds(): Collection
+    {
+        return $this->publisheds;
+    }
+
+    public function addPublished(Published $published): static
+    {
+        if (!$this->publisheds->contains($published)) {
+            $this->publisheds->add($published);
+            $published->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublished(Published $published): static
+    {
+        if ($this->publisheds->removeElement($published)) {
+            // set the owning side to null (unless already changed)
+            if ($published->getUserId() === $this) {
+                $published->setUserId(null);
+            }
+        }
 
         return $this;
     }
